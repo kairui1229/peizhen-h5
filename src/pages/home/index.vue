@@ -29,7 +29,7 @@
      <van-image :src="item.pic_image_url"/>
   </van-col>
 </van-row>
-<van-row class="yy-list" v-for="item in homeData.hospitals" :key="item.id" justify="space-around">
+<van-row @click="goOrder2(item)" class="yy-list" v-for="item in homeData.hospitals" :key="item.id" justify="space-around">
   <van-col span="6">
     <van-image :src="item.avatar_url" width="100px" height="90px"/>
   </van-col>
@@ -47,6 +47,7 @@
 
 <script setup>
 import { ref,reactive,onMounted,getCurrentInstance } from 'vue'
+import {useRouter} from 'vue-router'
 
 const searchValue = ref('')
 const { proxy } = getCurrentInstance()
@@ -65,13 +66,15 @@ onMounted(async() => {
   homeData.navs = data.navs
   homeData.now = data.now
   homeData.slides = data.slides
-  console.log(homeData);
 })
 
+const router = useRouter()
 const goOrder = (index) => {
-  
+  router.push(`/createOrder?id=${homeData.hospitals[index].id}`)
 }
-
+const goOrder2 = (data) => {
+  router.push(`/createOrder?id=${data.id}`)
+}
 </script>
 
 <style lang="less" scoped>
