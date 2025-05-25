@@ -43,7 +43,7 @@ const onSubmit = async () => {
     localStorage.setItem('h5_userInfo',JSON.stringify(data.data.userInfo))
     router.push('/')
   }else{
-    
+    proxy.$toast(data.message)
   }
 }
 </script>
