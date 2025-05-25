@@ -22,7 +22,7 @@ const active = ref(0)
 
 onMounted(()=>{
   const data = router.options.routes[0]
-  active.value = data.children.findIndex(item=> item.path === route.path)
+  active.value = data.children.findIndex(item=> '/' + item.path === route.path)
 })
 </script>
 
