@@ -8,6 +8,8 @@ import { Swipe, SwipeItem } from 'vant';
 import { Image as VanImage } from 'vant';
 import { Cell, CellGroup } from 'vant';
 import { Col, Row } from 'vant';
+import { Popup } from 'vant';
+import { Picker } from 'vant';
 import 'vant/lib/index.css';
 import router from './router'
 import api from './api'
@@ -29,5 +31,7 @@ app.use(VanImage);
 app.use(Cell);
 app.use(Col);
 app.use(Row);
+app.use(Picker);
+app.use(Popup);
 app.use(router)
 app.mount('#app')
