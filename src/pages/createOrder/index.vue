@@ -33,7 +33,49 @@
           </div>
         </template>
       </van-cell>
+      <van-cell>
+        <template #title>陪诊师</template>
+        <template #default>
+          <div @click="showComponion = true">
+              {{ componionName || '请选择陪诊师' }}
+            <van-icon name="arrow" />
+          </div>
+        </template>
+      </van-cell>
+      <van-cell>
+        <template #title>接送地址</template>
+        <template #default>
+          <van-field 
+          class="text"
+          input-align="right"
+          v-model="form.receiveAddress" 
+          placeholder="请填写地址" 
+          />
+        </template>
+      </van-cell>
+      <van-cell>
+        <template #title>联系电话</template>
+        <template #default>
+          <van-field 
+          class="text"
+          input-align="right"
+          v-model="form.tel" 
+          placeholder="请填写联系电话" 
+          />
+        </template>
+      </van-cell>
     </van-cell-group>
+
+    <van-cell-group title="服务需求" class="cell">
+        <van-field 
+          class="text"
+          style="height: 100px"
+          v-model="form.demand" 
+          placeholder="请填写服务需求" 
+        />
+    </van-cell-group>
+
+    <van-button type="primary" class="submit" block @click="submit" size="large">提交订单</van-button>
 
     <van-popup v-model:show="showHospital" position="bottom" :style="{ height: '30%' }">
       <van-picker 
@@ -48,6 +90,13 @@
         :min-date="minDate"
         @confirm="showTimeConfirm" 
         @cancel="showStartTime = false" 
+      />
+    </van-popup>
+    <van-popup v-model:show="showComponion" position="bottom" :style="{ height: '30%' }">
+      <van-picker 
+      :columns="ComponionColumns" 
+      @confirm="showComponionConfirm" 
+      @cancel="showComponion = false" 
       />
     </van-popup>
   </div>
@@ -108,6 +157,23 @@ const showTimeConfirm = (item) => {
   form.starttime = new Date(dateStr).getTime()
   showStartTime.value = false
 }
+
+const showComponion = ref(false)
+const componionName = ref()
+const ComponionColumns = computed(() => {
+  return createInfo.companion.map(item => {
+    return {text: item.name, value: item.id}
+  })
+})
+const showComponionConfirm = (item) => {
+  form.companion_id = item.selectedOptions[0].value
+  componionName.value = item.selectedOptions[0].text
+  showComponion.value = false
+}
+
+const submit = async () => {
+  
+}
 </script>
 
 <style lang="less" scoped>
@@ -151,7 +217,7 @@ const showTimeConfirm = (item) => {
   background-size: 20px;
 }
 
-.sumbit {
+.submit {
   position: absolute;
   bottom: 0;
 }
