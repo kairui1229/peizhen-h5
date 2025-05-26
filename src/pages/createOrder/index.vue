@@ -99,6 +99,13 @@
       @cancel="showComponion = false" 
       />
     </van-popup>
+    <!-- 支付二维码弹窗 -->
+    <van-dialog :showConfirmButton="false" v-model:show="showCode">
+      <van-icon name="cross" class="close" @click="closeCode"/>
+      <div>微信支付</div>
+      <van-image width="150px" height="150px" :src="codeImg"></van-image>
+      <div>请使用本人微信扫描二维码</div>
+    </van-dialog>
   </div>
 </template>
 
@@ -106,6 +113,8 @@
 import { useRouter } from "vue-router";
 import { onMounted, getCurrentInstance, reactive, ref,computed} from "vue";
 import StatusBar from "@/components/statusBar.vue";
+import { showNotify } from "vant";
+import Qrcode from "qrcode";
 
 const { proxy } = getCurrentInstance()
 
@@ -118,7 +127,6 @@ const createInfo = reactive({
 onMounted(async () => {
   const { data: { data } } = await proxy.$api.h5Companion()
   Object.assign(createInfo, data)
-  console.log(createInfo);
 })
 
 const router = useRouter()
@@ -171,8 +179,33 @@ const showComponionConfirm = (item) => {
   showComponion.value = false
 }
 
+const showCode = ref(false)
+const codeImg = ref()
+const closeCode = () => {
+  showCode.value = false
+  router.push('/order')
+}
 const submit = async () => {
-  
+  const params = [
+  'hospital_id',
+  'hospital_name',
+  'starttime',
+  'demand',
+  'companion_id',
+  'receiveAddress',
+  'tel',
+]
+  for(const i of params){
+    if(!form[i]){
+      showNotify({message: '请填写完整信息'})
+      return
+    }
+  }
+  const {data:{data}} = await proxy.$api.createOrder(form)
+  Qrcode.toDataURL(data.wx_code).then(url => {
+    showCode.value = true
+    codeImg.value = url
+  })
 }
 </script>
 
