@@ -24,12 +24,30 @@
           </div>
         </template>
       </van-cell>
+      <van-cell>
+        <template #title>就诊时间</template>
+        <template #default>
+          <div @click="showStartTime = true">
+              {{ currentDate || '请选择就诊时间' }}
+            <van-icon name="arrow" />
+          </div>
+        </template>
+      </van-cell>
     </van-cell-group>
+
     <van-popup v-model:show="showHospital" position="bottom" :style="{ height: '30%' }">
       <van-picker 
       :columns="showHospColumns" 
       @confirm="showHospConfirm" 
       @cancel="showHospital = false" 
+      />
+    </van-popup>
+    <van-popup v-model:show="showStartTime" position="bottom" :style="{ height: '30%' }">
+      <van-date-picker
+        title="选择日期"
+        :min-date="minDate"
+        @confirm="showTimeConfirm" 
+        @cancel="showStartTime = false" 
       />
     </van-popup>
   </div>
@@ -62,6 +80,11 @@ const goBack = () => {
 const form = reactive({
   hospital_id: '',
   hospital_name: '',
+  starttime: '',
+  demand: '',
+  companion_id: '',
+  receiveAddress: '',
+  tel: '',
 })
 
 const showHospital = ref(false)
@@ -74,6 +97,16 @@ const showHospConfirm = (item) => {
   form.hospital_id = item.selectedOptions[0].value
   form.hospital_name = item.selectedOptions[0].text
   showHospital.value = false
+}
+
+const showStartTime = ref(false)
+const currentDate = ref();
+const minDate = ref(new Date())
+const showTimeConfirm = (item) => {
+  const dateStr = item.selectedValues.join('-')
+  currentDate.value = dateStr
+  form.starttime = new Date(dateStr).getTime()
+  showStartTime.value = false
 }
 </script>
 
