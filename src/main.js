@@ -11,6 +11,7 @@ import { Cell, CellGroup } from 'vant';
 import { Col, Row } from 'vant';
 import { Popup } from 'vant';
 import { DatePicker } from 'vant';
+import { Tab, Tabs } from 'vant';
 import { Picker } from 'vant';
 import { Dialog } from 'vant';
 import 'vant/lib/index.css';
@@ -37,6 +38,8 @@ app.use(Row);
 app.use(Picker);
 app.use(Popup);
 app.use(DatePicker);
+app.use(Tab);
+app.use(Tabs);
 app.use(Notify);
 app.use(Dialog);
 app.use(router)
