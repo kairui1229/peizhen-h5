@@ -8,7 +8,7 @@
       <van-tab title="已完成" name="3"></van-tab>
       <van-tab title="已取消" name="4"></van-tab>
     </van-tabs>
-    <van-row @click="getDetail(item)" v-for="item in order" :key="item.out_trade_no" class="van-row">
+    <van-row @click="goDetail(item)" v-for="item in order" :key="item.out_trade_no" class="van-row">
       <van-col span="5">
         <van-image radius="5" width="50" height="50" :src="item.serviceImg"/>
       </van-col>
@@ -33,6 +33,7 @@
 <script setup>
 import { ref,getCurrentInstance,onMounted } from 'vue'
 import counter from '@/components/counter.vue'
+import {useRouter} from 'vue-router'
 
 const order = ref([])
 const active = ref("")
@@ -52,7 +53,7 @@ const getOrderList = async (state) => {
   const {data:{data}} = await proxy.$api.orderList({state})
   console.log(data)
   data.forEach(item => {
-    item.timer = item.order_start_time + 720000 - Date.now()
+    item.timer = item.order_start_time + 7200000 - Date.now()
    })
   order.value = data
 }
@@ -60,8 +61,9 @@ const onClickTab = (item) => {
   getOrderList(item.name)
 }
 
-const getDetail = (item) => {
-  
+const router = useRouter()
+const goDetail = (item) => {
+  router.push(`/detail?oid=${item.out_trade_no}`)
 }
 </script>
 
