@@ -7,7 +7,7 @@
     <div class="order">
       <div class="top">
         <div class="text1">我的订单</div>
-        <div @click="goOrder(0)" class="text2">全部</div>
+        <div @click="goOrder()" class="text2">全部</div>
       </div>
       <div class="buttom">
         <div @click="goOrder(1)" class="item">

@@ -33,8 +33,9 @@
 <script setup>
 import { ref,getCurrentInstance,onMounted } from 'vue'
 import counter from '@/components/counter.vue'
-import {useRouter} from 'vue-router'
+import {useRouter, useRoute} from 'vue-router'
 
+const route = useRoute()
 const order = ref([])
 const active = ref("")
 const { proxy } = getCurrentInstance()
@@ -46,17 +47,21 @@ const colorMap = {
   '已取消': '#999999'
 }
 
+
 onMounted(() => {
-  getOrderList("")
+  const status = route.query.status || ""
+  active.value = status
+  getOrderList(status)
 })
+
 const getOrderList = async (state) => {
   const {data:{data}} = await proxy.$api.orderList({state})
-  console.log(data)
   data.forEach(item => {
     item.timer = item.order_start_time + 7200000 - Date.now()
    })
   order.value = data
 }
+
 const onClickTab = (item) => {
   getOrderList(item.name)
 }

@@ -139,7 +139,6 @@ onMounted(async() => {
   Qrcode.toDataURL(data.code_url).then(url => {
     codeImg.value = url
   })
-  console.log(detailData);
 })
 
 </script>
