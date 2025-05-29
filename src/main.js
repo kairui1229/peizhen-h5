@@ -21,6 +21,16 @@ import App from './App.vue'
 
 const app = createApp(App)
 app.config.globalProperties.$api = api
+
+router.beforeEach((to, from, next) => {
+    if (to.path !== '/login') {
+        if(!localStorage.getItem('h5_token')){
+          return '/login'
+        }
+    }
+    next();
+})
+
 app.use(Button)
 app.use(Tabbar);
 app.use(TabbarItem);
